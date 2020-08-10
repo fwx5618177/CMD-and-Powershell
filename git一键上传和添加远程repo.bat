@@ -95,12 +95,12 @@ git commit -am "%str%"
 
 for /f %%i in ('git remote') do (
 	echo Ô¶³Ì²Ö¿âÃû×Ö£º%%i
-	set /a repoName=%%i
+	set repoName=%%i
 )
 
 for /f "tokens=1,2* delims=\ " %%i in ('git branch') do (
 	echo °æ±¾£º%%j
-	set /a branch=%%j
+	set branch=%%j
 )
 
 echo %repoName%

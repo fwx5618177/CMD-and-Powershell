@@ -85,6 +85,9 @@ goto start
 
 
 :s6
+set repoName=
+set branch=
+
 echo 全自动上传
 set /p str=文件更改信息：
 git add .
@@ -93,6 +96,7 @@ git commit -am "%str%"
 for /f %%i in ('git remote') do (
 	echo 远程仓库名字：%%i
 	set /a repoName=%%i
+	echo 
 )
 
 for /f "tokens=1,2* delims=\ " %%i in ('git branch') do (

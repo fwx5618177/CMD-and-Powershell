@@ -1,8 +1,7 @@
 @echo off
 set /p str=Input :
-
 git status
 git add .
 git commit -am "%str%"
 
-git push fwx master
+git push fwxCmdPowershell master

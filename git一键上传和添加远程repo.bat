@@ -11,6 +11,7 @@ echo 3.全部文件：add + commit
 echo 4.添加远程仓库
 echo 5.半自动push到远程仓库
 echo 6.全自动push（默认第一个仓库和master版本）
+echo 0.退出
 echo.
 
 :select
@@ -22,6 +23,7 @@ IF /I "%select%"=="3" GOTO s3
 IF /I "%select%"=="4" GOTO s4
 IF /I "%select%"=="5" GOTO s5
 IF /I "%select%"=="6" GOTO s6
+IF /I "%select%"=="0" GOTO s0
 
 ECHO 选择无效，请重新输入 
 ECHO.
@@ -112,3 +114,6 @@ echo.
 echo 上传完成
 pause
 goto start
+
+:s0
+exit

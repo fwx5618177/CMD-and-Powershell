@@ -69,7 +69,7 @@ git commit -am "%str%"
 for /f %%i in ('git remote') do (
 	echo 远程仓库名字：%%i
 )
-set /p repoName=%%i
+set /p repoName=仓库名字：
 
 for /f "tokens=1,2* delims=\ " %%i in ('git branch') do (
 	echo 版本：%%j
@@ -85,6 +85,9 @@ goto start
 
 
 :s6
+set repoName=
+set branch=
+
 echo 全自动上传
 set /p str=文件更改信息：
 git add .
@@ -92,18 +95,20 @@ git commit -am "%str%"
 
 for /f %%i in ('git remote') do (
 	echo 远程仓库名字：%%i
-	set /a repoName=%%i
+	set repoName=%%i
 )
 
 for /f "tokens=1,2* delims=\ " %%i in ('git branch') do (
 	echo 版本：%%j
-	set /a branch=%%j
+	set branch=%%j
 )
 
-git push %repoName% %branch%
+echo !repoName!
+echo !branch!
+
+git push !repoName! !branch!
 
 echo.
 echo 上传完成
-git status
 pause
 goto start

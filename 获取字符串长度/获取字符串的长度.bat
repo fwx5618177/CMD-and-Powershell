@@ -1,9 +1,15 @@
 @echo off
 
-set /p str=è¾“å…¥å­—ç¬¦ä¸²ï¼š
-set str1=%str%
+set /p input=ÊäÈë×Ö·û´®£º
+set str=%input%
+
+set /a num=0
 :next1
-if not "%str%"==""(
+if not "%str%"=="" (
 	set /a num+=1
-	set "str=%%"
+	@echo %str:~0,1%
+	set "str=%str:~1%"
+	goto next1
 )
+
+echo ×Ö·û´®µÄ³¤¶ÈÎª£º%num% && pause > nul

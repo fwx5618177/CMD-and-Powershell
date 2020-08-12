@@ -3,7 +3,6 @@ setlocal enabledelayedexpansion
 
 D:
 set "envFile=D:\codedata\CMD\RegularTaskOnSchedule\env.txt"
-pause
 set /a count=0
 for /f %%i in (%envFile%) do (
 	set /a count+=1

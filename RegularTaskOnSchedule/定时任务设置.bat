@@ -12,8 +12,11 @@ for /f %%i in (%env%) do (
 )
 
 echo.
-::schtasks /create /sc DAILY /tn "TASK BAT Upload files" /TR !path!\RegularTaskOnSchedule\全自动上传.bat /ST 22:00
-schtasks /create /sc minute /tn "TASK BAT Upload files" /TR "!pathStr!\RegularTaskOnSchedule\全自动上传.bat"
+::schtasks /create /sc DAILY /tn "TASK BAT Upload files" /TR !path!\RegularTaskOnSchedule\ȫ�Զ��ϴ�.bat /ST 22:00
+
+set "batDir=!pathStr!\RegularTaskOnSchedule\ȫ�Զ��ϴ�.bat"
+echo %batDir%
+schtasks /create /sc minute /mo 1 /tn "TASK BAT Upload files" /TR "%batDir%"
 
 
 pause > nul

@@ -13,7 +13,7 @@ for /f %%i in (%env%) do (
 
 echo.
 ::schtasks /create /sc DAILY /tn "TASK BAT Upload files" /TR !path!\RegularTaskOnSchedule\全自动上传.bat /ST 22:00
-schtasks /create /sc minute /tn "TASK BAT Upload files" /TR "!path!\RegularTaskOnSchedule\全自动上传.bat"
+schtasks /create /sc minute /tn "TASK BAT Upload files" /TR "!pathStr!\RegularTaskOnSchedule\全自动上传.bat"
 
 
 pause > nul

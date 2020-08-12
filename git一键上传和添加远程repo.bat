@@ -157,7 +157,7 @@ git push !repoName! !branch!
 
 echo.
 echo 上传完成
-pause
+pause > nul
 goto start
 
 :s0

@@ -91,7 +91,7 @@ set repoName=
 set branch=
 
 echo 全自动上传
-REM set /p str=文件更改信息：
+set /p str=全部文件更改信息记录：
 
 ::得到目录数据
 for /f "tokens=4 delims=\ " %%i in ('dir ^| findstr /c:"%date:~0,10%" ^| findstr /v /c:"\."') do (
@@ -100,12 +100,13 @@ for /f "tokens=4 delims=\ " %%i in ('dir ^| findstr /c:"%date:~0,10%" ^| findstr
 
 ::得到文件的新增数据
 for /f %%i in (list.txt) do (
-	cd %%i
-	::获取新增文件名
-	(for /f "tokens=4 delims=\ " %%a in ('dir ^| findstr /c:"%date:~0,10%" ^| findstr /v /c:"DIR"') do (
-		echo %%a
-	)) >> ..\fileList.txt
 	
+	cd %%i
+
+	::获取新增文件名
+	for /f "tokens=4 delims=\ " %%a in ('dir ^| findstr /c:"%date:~0,10%" ^| 	findstr /v /c:"DIR"') do (
+		echo %%a >> ..\fileList.txt
+	) 
 	cd ..
 )
 
@@ -122,19 +123,22 @@ for /f %%i in (list.txt) do (
 		echo %%a
 		git commit -m "add func: %%a in %date:~0,10%-%time%" %%a
 	)
-	
 	cd ..
 	
 )
 
 type list.txt >> UploadLog.txt
 echo %date:~0,10%-%time% >> UploadLog.txt
-
+echo. >> UploadLog.txt
 type fileList.txt >> UploadLog.txt
 echo %date:~0,10%-%time% >> UploadLog.txt
+echo. >> UploadLog.txt
 
-del list.txt
-del fileList.txt
+del list.txt fileList.txt
+
+
+git add .
+git commit -am "modify: %str% in %date:~0,10%-%time% "
 
 for /f %%i in ('git remote') do (
 	echo 远程仓库名字：%%i

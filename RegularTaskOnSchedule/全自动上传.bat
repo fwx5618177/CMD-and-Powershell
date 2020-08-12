@@ -21,9 +21,6 @@ for /f "tokens=4 delims=\ " %%i in ('dir ^| findstr /c:"%date:~0,10%" ^| findstr
 	echo %%i>>list.txt
 )
 
-pause
-
-
 ::得到文件的新增数据
 for /f %%i in (list.txt) do (
 	

@@ -1,0 +1,1 @@
+Write-Host "test ps file" -BackgroundColor Blue -ForegroundColor Red

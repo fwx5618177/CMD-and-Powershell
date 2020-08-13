@@ -396,3 +396,27 @@ env.txt
 count获取最后一行.bat 
 2020/08/13-23:51:56.10 
  
+cmd调用powershell
+cmd输出文字颜色更改(不可用)
+git一键上传至gitub
+RegularTaskOnSchedule
+不换行输出
+获取最后一行
+设置护眼绿色
+2020/08/13-23:54:35.09 
+ 
+test.ps1 
+调用ps-命令测试.bat 
+测试-部分颜色.bat 
+部分显示颜色更改.bat 
+git一键上传和添加远程repo.bat 
+env.txt 
+全自动上传.bat 
+定时任务删除.bat 
+定时任务查询.bat 
+定时任务设置.bat 
+测试.bat 
+测试-不换行输出赋值.bat 
+count获取最后一行.bat 
+2020/08/13-23:54:35.11 
+ 

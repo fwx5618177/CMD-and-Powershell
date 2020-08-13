@@ -135,7 +135,6 @@ echo %date:~0,10%-%time% >> UploadLog.txt
 echo. >> UploadLog.txt
 
 ::获取更改名单，一行显示
-if exist tmplist.txt del tmplist.txt
 
 for /f %%i in ('fileList.txt') do (
 	set /p="%%i"<nul>>tmplist.txt

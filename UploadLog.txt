@@ -225,3 +225,30 @@ env.txt
 测试.bat 
 2020/08/13- 1:32:16.77 
  
+git一键上传至gitub
+RegularTaskOnSchedule
+2020/08/13-22:30:04.40 
+ 
+git一键上传和添加远程repo.bat 
+env.txt 
+全自动上传.bat 
+定时任务删除.bat 
+定时任务查询.bat 
+定时任务设置.bat 
+测试.bat 
+2020/08/13-22:30:04.41 
+ 
+git一键上传至gitub
+RegularTaskOnSchedule
+设置护眼绿色
+2020/08/13-22:35:25.77 
+ 
+git一键上传和添加远程repo.bat 
+env.txt 
+全自动上传.bat 
+定时任务删除.bat 
+定时任务查询.bat 
+定时任务设置.bat 
+测试.bat 
+2020/08/13-22:35:25.78 
+ 

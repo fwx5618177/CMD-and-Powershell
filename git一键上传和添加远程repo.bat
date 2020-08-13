@@ -145,7 +145,6 @@ for /f %%i in (tmplist.txt) do (
 	set tmpStr=%%i
 )
 
-del tmplist.txt
 echo !tmpStr:~,-1!
 
 del list.txt fileList.txt

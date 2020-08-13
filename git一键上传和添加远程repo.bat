@@ -146,7 +146,7 @@ for /f %%i in (tmplist.txt) do (
 
 echo !tmpStr:~,-1!
 
-del list.txt fileList.txt
+del list.txt fileList.txt tmplist.txt
 
 
 git add .

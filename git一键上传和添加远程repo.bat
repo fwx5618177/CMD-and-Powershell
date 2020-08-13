@@ -136,7 +136,7 @@ echo. >> UploadLog.txt
 
 ::获取更改名单，一行显示
 
-for /f %%i in ('fileList.txt') do (
+for /f %%i in (fileList.txt) do (
 	set /p="%%i"<nul>>tmplist.txt
 )
 

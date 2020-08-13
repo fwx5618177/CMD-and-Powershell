@@ -134,11 +134,23 @@ type fileList.txt >> UploadLog.txt
 echo %date:~0,10%-%time% >> UploadLog.txt
 echo. >> UploadLog.txt
 
-del list.txt fileList.txt
+::获取更改名单，一行显示
+
+for /f %%i in (fileList.txt) do (
+	set /p="%%i,"<nul>>tmplist.txt
+)
+
+for /f %%i in (tmplist.txt) do (
+	set tmpStr=%%i
+)
+
+echo !tmpStr:~,-1!
+
+del list.txt fileList.txt tmplist.txt
 
 
 git add .
-git commit -am "modify: %str% in %date:~0,10%-%time% "
+git commit -am "modify: %str% add: !tmpStr:~,-1! in %date:~0,10%-%time% "
 
 for /f %%i in ('git remote') do (
 	echo 远程仓库名字：%%i

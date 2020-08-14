@@ -1,0 +1,343 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+
+<html lang="zh">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<meta name="generator" content="Notepad++" />
+		<title>上海企事业单位环境信息公开平台</title>
+		<!--[if IE 8 ]>	<body class="ie8"><![endif]-->
+		<!--[if IE 9 ]>	<body class="ie9"><![endif]-->
+		<link rel="stylesheet" type="text/css" href="stylesheets/screen.css" media="screen" />	
+		
+		<script type="text/javascript" src="javascript/tab.js"></script>
+		<script type="text/javascript" src="/plugins/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="javascript/slide.js"></script>
+		
+	</head>
+
+	<body>
+		<div id="wrapper">
+			
+
+		
+            <link rel="stylesheet" type="text/css" href="/jsp/view/stylesheets/head.css" media="screen" />
+				
+				<div id="head">
+				<div class="logo"><img src="images/logo.png" alt="" /></div>
+				<p class="ctrl"><label for="">今天是</label><span>2020.08.14</span><br />
+				<a href="/jsp/view/index.jsp">首页</a>
+				
+				<a href="/xhyf/login.jsp"><img src="images/loginin.png" alt="" />登录</a>
+				
+				
+				</div>
+				
+			
+			<div class="mainTit"><div class="limit"><p>企事业单位列表<a href="/jsp/view/index.jsp" class="back">&lt;返回</a></p></div></div>
+			<form id="searchForm" name="searchForm" action="/jsp/view/list.jsp" method="post">
+				<input type="hidden" name="pageSize" id="pageSize">
+				<input type="hidden" name="currentPage" id="currentPage">
+				<input type="hidden" name="selField" id="selField" value="ST_EXT1">
+				<input type="hidden" name="selValue" id="selValue">
+				<input type="hidden" name="selFieldShowStr" id="selFieldShowStr" value="污染源名称">
+				<input type="hidden" name="district" id="district" value="">
+				<input type="hidden" name="nd" id="nd" value="2020">
+			</form>
+			<div id="menu">
+				<ul id="nav" class="nav2">	
+				<li class="mainlevel xiala2" id="mainlevel_02" style="width: 132px;">
+						<a href="#" id="nd_name">2020年</a>
+						<ul id="district_sel" style="display: none;">
+						    <li><a href="javascript:selNd('2020');">2020年</a></li>
+							<li><a href="javascript:selNd('2019');">2019年</a></li>
+							<li><a href="javascript:selNd('2018');">2018年</a></li>
+							<li><a href="javascript:selNd('2017');">2017年</a></li>
+						</ul>
+					</li>
+					<li class="mainlevel xiala2" id="mainlevel_02" style="width: 236px;">
+						<a href="#" id="district_name">所属区域</a>
+						<ul id="district_sel">
+							<li><a href="javascript:selDis('');">所属区域</a></li>
+							
+								<li><a href="javascript:selDis('松江区');">松江区</a></li>
+							
+								<li><a href="javascript:selDis('青浦区');">青浦区</a></li>
+							
+								<li><a href="javascript:selDis('虹口区');">虹口区</a></li>
+							
+								<li><a href="javascript:selDis('杨浦区');">杨浦区</a></li>
+							
+								<li><a href="javascript:selDis('崇明区');">崇明区</a></li>
+							
+								<li><a href="javascript:selDis('长宁区');">长宁区</a></li>
+							
+								<li><a href="javascript:selDis('静安区');">静安区</a></li>
+							
+								<li><a href="javascript:selDis('黄浦区');">黄浦区</a></li>
+							
+								<li><a href="javascript:selDis('国际旅游度假区管委会');">国际旅游度假区管委会</a></li>
+							
+								<li><a href="javascript:selDis('上海化工区');">上海化工区</a></li>
+							
+								<li><a href="javascript:selDis('徐汇区');">徐汇区</a></li>
+							
+								<li><a href="javascript:selDis('上海综合保税区');">上海综合保税区</a></li>
+							
+								<li><a href="javascript:selDis('中国（上海）自由贸易试验区');">中国（上海）自由贸易试验区</a></li>
+							
+								<li><a href="javascript:selDis('临港地区开发建设管委会');">临港地区开发建设管委会</a></li>
+							
+								<li><a href="javascript:selDis('奉贤区');">奉贤区</a></li>
+							
+								<li><a href="javascript:selDis('浦东新区');">浦东新区</a></li>
+							
+								<li><a href="javascript:selDis('普陀区');">普陀区</a></li>
+							
+								<li><a href="javascript:selDis('金山区');">金山区</a></li>
+							
+								<li><a href="javascript:selDis('嘉定区');">嘉定区</a></li>
+							
+								<li><a href="javascript:selDis('闵行区');">闵行区</a></li>
+							
+								<li><a href="javascript:selDis('宝山区');">宝山区</a></li>
+							
+						</ul>
+					</li>
+
+					<li class="mainlevel xiala2" id="mainlevel_01"  style="width: 230px;"><a href="#" id="searchField">污染源名称</a>
+						<ul id="sub_01">
+							
+						</ul>						
+					</li>
+					<li class="mainlevel mainlevel2 nobg" style="width: 500px;">
+					<input type="text" class="iptSearch iptSearch2" name="selValueStr" id="selValueStr" value=""/>
+					<input type="button" value=" " class="btnSearch2" onclick="search();"/>
+					</li>
+				</ul>
+			</div>
+			<table class="Llist limit" >
+			  <tr class="odd2" style=" background:#ddd;">
+				<th ></th>
+			    <th >企业名称</th>
+			    <th >所属区县</th>
+			    <th >污染类型</th>
+			    <!-- <th >管理属性</th>-->
+		      </tr>
+				  	
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1632')">
+							<td >1</td>
+							<td >3M中国有限公司</td>
+							<td >徐汇区&nbsp;</td>
+							<td >废气,土壤,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('2066')">
+							<td >2</td>
+							<td >3M中国有限公司新桥工厂</td>
+							<td >松江区&nbsp;</td>
+							<td >废气,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('202001020')">
+							<td >3</td>
+							<td >ABB高压电机有限公司</td>
+							<td >闵行区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('1634')">
+							<td >4</td>
+							<td >阿克苏诺贝尔功能涂料（上海）有限公司</td>
+							<td >松江区&nbsp;</td>
+							<td >土壤,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1635')">
+							<td >5</td>
+							<td >阿克苏诺贝尔太古漆油（上海）有限公司</td>
+							<td >松江区&nbsp;</td>
+							<td >废气,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('201902176')">
+							<td >6</td>
+							<td >阿仨希工业科技（上海）有限公司</td>
+							<td >松江区&nbsp;</td>
+							<td >废气&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1270')">
+							<td >7</td>
+							<td >阿蓓亚塑料实业（上海）有限公司</td>
+							<td >奉贤区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('202004001')">
+							<td >8</td>
+							<td >埃地沃兹贸易（上海）有限公司</td>
+							<td >浦东新区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1031')">
+							<td >9</td>
+							<td >埃肯有机硅（上海）有限公司</td>
+							<td >闵行区&nbsp;</td>
+							<td >废气,土壤,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('1637')">
+							<td >10</td>
+							<td >艾迪科精细化工（上海）有限公司</td>
+							<td >金山区&nbsp;</td>
+							<td >危废,其他&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1003')">
+							<td >11</td>
+							<td >艾仕得涂料系统（上海）有限公司</td>
+							<td >嘉定区&nbsp;</td>
+							<td >废气,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('1639')">
+							<td >12</td>
+							<td >艾仕得涂料系统技术研发（上海）有限公司</td>
+							<td >闵行区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1640')">
+							<td >13</td>
+							<td >爱美达（上海）热能系统有限公司</td>
+							<td >松江区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('1004')">
+							<td >14</td>
+							<td >爱普香料集团股份有限公司</td>
+							<td >嘉定区&nbsp;</td>
+							<td >废水,土壤,其他&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('1642')">
+							<td >15</td>
+							<td >爱思帝达耐时（上海）驱动系统有限公司</td>
+							<td >奉贤区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('201902088')">
+							<td >16</td>
+							<td >爱通汽车零部件（上海）有限公司</td>
+							<td >浦东新区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('130')">
+							<td >17</td>
+							<td >安靠封装测试（上海）有限公司</td>
+							<td >浦东新区&nbsp;</td>
+							<td >废水,土壤,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('1645')">
+							<td >18</td>
+							<td >安美特（中国）化学有限公司上海青浦分公司</td>
+							<td >青浦区&nbsp;</td>
+							<td >废水,危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="even2" style="cursor:pointer" onclick="openInfo('201902177')">
+							<td >19</td>
+							<td >奥斯佳材料科技（上海）有限公司</td>
+							<td >松江区&nbsp;</td>
+							<td >危废&nbsp;</td>
+						  </tr>
+						
+						 <tr class="odd2" style="cursor:pointer" onclick="openInfo('34')">
+							<td >20</td>
+							<td >奥特斯（中国）有限公司</td>
+							<td >闵行区&nbsp;</td>
+							<td >废水,危废&nbsp;</td>
+						  </tr>
+					
+		  </table>			
+				<div class="page">
+					
+					<a href="javascript:search(1);" >首页</a>
+					<a href="javascript:search(0);">上一页</a>
+					<a href="javascript:search(2);">下一页</a>
+					<a href="javascript:search(56);">末页</a>
+					<span>跳至</span><input type="text" class="jump" id="jumpPage"><span>页</span>
+					<input type="button" value="GO" class="go" onClick="search($('#jumpPage').val());">&nbsp;&nbsp;
+					<span>共56页，1101条记录</span>&nbsp;&nbsp;
+					<span>当前第1页</span>
+				</div>
+			<div id="footer">
+				<!-- Copyright &copy; -->
+				<p>
+				上海市生态环境局主办 地址：大沽路100号 联系电话：23111111 办公时间：周一至周五 9：00--17：30(节假日除外)
+				</p> 
+				<p>上海市环境保护信息中心制作 联系电话：+86-021-24011576    Email:bigt@sepb.gov.cn 
+				</p>
+			</div>
+		</div>
+    </body>
+</html>
+<script language="javascript">
+var fieldArr = [{field:'ST_EXT1',showStr:'污染源名称'},
+				{field:'ST_WRY_CODE',showStr:'污染源编码'},
+				{field:'ST_SHXYDM',showStr:'社会信用代码'},
+				{field:'ST_FDDBR',showStr:'法定代表人'},
+				{field:'ST_SSHY_MAIN',showStr:'所属行业'},
+				{field:'ST_WRYLB',showStr:'污染源类别'}
+];
+$(function(){
+	$("#searchField").html('污染源名称');
+	$.each(fieldArr,function(i,v){
+		$("#sub_01").append('<li><a href="javascript:void(0);" onclick="onSel(\''+v.field+'\',\''+v.showStr+'\')">'+v.showStr+'</a></li>');
+	});
+	var district = "";
+	if(district==''||district=='null'){
+		$("#district_name").html('所属区域');
+	}else{
+		$("#district_name").html(district);
+	}
+});
+function search(page){
+	if(!isNaN(page)){
+		$('#currentPage').val(page);
+	}
+	$('#selValue').val($('#selValueStr').val());
+	searchForm.submit();
+}
+function onSel(field,showStr){
+	$("#selField").val(field);
+	$("#selFieldShowStr").val(showStr);
+	$("#searchField").html(showStr);
+}
+
+function selDis(district){
+	$("#district").val(district);
+	if(district==''){
+		$("#district_name").html('区县');
+	}else{
+		$("#district_name").html(district);
+	}
+	
+}
+function selNd(nd){
+	$("#nd").val(nd);
+	$("#nd_name").html(nd+'年');
+	search();
+}
+function openInfo(id){
+	window.location.href = "/jsp/view/info.jsp?id="+id;
+}
+</script>

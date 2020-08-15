@@ -1,0 +1,1 @@
+CreateObject("InternetExplorer.application").document

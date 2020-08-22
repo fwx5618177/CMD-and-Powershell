@@ -6,6 +6,7 @@ if "%FILEPATH%"=="" goto start
 set /p "RESULTFILE=结果存放地址："
 if "%RESULTFILE%"=="" goto start
 
+powershell -command "& { Set-ExecutionPolicy Unrestricted }"
 powershell -file GetSearch.ps1 %FILEPATH% %RESULTFILE%
 
 echo.

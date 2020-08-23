@@ -17,6 +17,7 @@ function GetData() {
             #url: https://data.chinaz.com/
             #search: /keyword/analysis/
             # https://data.chinaz.com/keyword/analysis/%E6%96%97%E9%B1%BC
+            # https://data.chinaz.com/keyword/allindex/%E6%96%97%E9%B1%BC/1
 
             $url = "https://data.chinaz.com/keyword/analysis/$_"
 

@@ -1,0 +1,38 @@
+在日常测试中，有时候会需要生成一些指定大小的文件来进行测试，或者需要模拟磁盘空间不足的情况，对于第一种情况，自己写文件虽然可以实现，但是写文件需要耗费一些时间，如果需要测试的文件很大，那将耗费不少的时间；而对于第二种情况，通过往指定磁盘copy/paste文件来占用空间的方式往往会效率比较低。对于这两种情况，使用微软提供的fsutil.exe命令来创建指定大小的文件将是非常有效的一种实现方式。
+语法：
+
+fsutil file [createnew] PathName length
+
+1、C:\>fsutil
+---- 支持的命令 ----
+behavior        控制文件系统行为
+dirty           管理卷的被损坏的位数
+file            文件特定命令
+fsinfo          文件系统信息
+hardlink        硬链接管理
+objectid        对象 ID 管理
+quota           配额管理
+reparsepoint    重分析点管理
+sparse          稀疏文件控制
+usn             USN 管理
+volume          卷管理
+
+2、C:\>fsutil file
+---- 支持的 FILE 命令 ----
+findbysid               根据安全标识符查找文件
+queryallocranges        查询文件的分配的范围
+setshortname            为文件设置短名称
+setvaliddata            为文件设置有效数据长度
+setzerodata             为文件设置零数据
+createnew               创建一个指定大小的新文件
+
+3、C:\>fsutil file createnew
+用法 : fsutil file createnew <文件名> <长度>
+范例：fsutil file createnew d:\aab.txt 4096
+
+在D盘下创建一个名字为aab.txt的4K大小的文件。
+
+C:\>fsutil file createnew testfile 10737418240
+创建10Gbytes的文件
+
+注意：它的长度是以字节为单位的。

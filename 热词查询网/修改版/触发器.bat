@@ -8,7 +8,7 @@ if "%RESULT%"=="" goto start
 set /p "Pages=搜索的页数：(1-5页可以写成1..5)"
 if "%Pages%"=="" goto start
 
-powershell -file 获取热词.ps1 %FILE% %RESULT% %Pages%
+powershell -file GetAll.ps1 %FILE% %RESULT% %Pages%
 
 echo.
 echo 结束
